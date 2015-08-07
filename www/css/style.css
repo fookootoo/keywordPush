@@ -1,1 +1,20 @@
 /* Empty. Add your own CSS if you like */
+.settingfont{
+    font-family:Î¢ÈíÑÅºÚ;
+    font-size: small;
+   /* color: #aaa;*/
+}
+
+.phonefont{
+    float: right;
+
+}
+
+.titlefont{
+    font-family:Î¢ÈíÑÅºÚ;
+    font-size:large;
+}
+.vmiddle {
+    padding-top: 20px;
+    vertical-align:middle;
+}

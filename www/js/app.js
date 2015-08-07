@@ -11,6 +11,9 @@ angular.module('starter', ['ionic'])
         $ionicConfigProvider.tabs.position('bottom'); // other values: top
 
     }])
+    .config(function($compileProvider){
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+    })
 
     .run(function ($ionicPlatform, jPushService,$state,$localstorage) {
         $ionicPlatform.ready(function () {

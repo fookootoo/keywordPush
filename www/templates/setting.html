@@ -1,17 +1,50 @@
 <ion-view view-title="设置">
     <ion-content>
-    <ul class="list">
 
-        <li class="item item-toggle" style="font-family:微软雅黑;font-size: small">
-            是否开启推送
-            <label class="toggle toggle-calm    ">
-                <input type="checkbox">
 
-                <div class="track">
-                    <div class="handle"></div>
-                </div>
-            </label>
-        </li>
-    </ul>
-        </ion-content>
+        <div class="list">
+
+
+            <ion-toggle ng-model="user.ispush" toggle-class="toggle-calm">Turn on Push</ion-toggle>
+
+
+
+            <a class="item item-thumbnail-right "  ng-click="showPhoto()">
+
+                <img ng-src="{{user.photo}}">
+
+                Photo
+
+            </a>
+
+            <a class="item item-icon-left" ng-click="showInput('nickname')">
+                <i class="icon ion-mic-a"></i>
+                Nick Name
+                <span class="item-note">
+                    {{user.nickname}}
+                </span>
+            </a>
+
+
+
+            <a class="item item-icon-left" ng-click="showInput('phonenumber')">
+                <i class="icon ion-ios-telephone"></i>
+                Phone Number
+                <i class="item-note  ">{{user.phonenumber}}</i>
+
+            </a>
+
+
+
+            <a class="item item-icon-left" href="#">
+                <i class="icon ion-person-stalker"></i>
+                Friends
+                <span class="badge badge-assertive">0</span>
+            </a>
+            <button class="button button-full button-balanced"  ng-click="save()">
+                Full Width Block Button
+            </button>
+
+        </div>
+    </ion-content>
 </ion-view>
