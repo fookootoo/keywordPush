@@ -119,12 +119,12 @@ angular.module('starter')
         $scope.keyvalue = keyWordsService.get($stateParams.keywordId)
 
     })
-    .controller('SettingCtrl', function ($scope, $ionicPopup, $ionicActionSheet, $timeout,Camera) {
+    .controller('SettingCtrl', function ($scope, $ionicPopup, $ionicActionSheet, $timeout,Camera,$localstorage) {
 
 
         $scope.user = {};
         $scope.user.nickname='hahah';
-        $scope.user.photo='img/car.jpg';
+        $scope.user.photo=$localstorage.get('userlogo') || 'img/car.jpg';
         $scope.user.ispush = true;
         $scope.$watch('user.ispush',function(){
             //alert($scope.user.ispush);
@@ -137,12 +137,15 @@ angular.module('starter')
                 targetWidth: 320,
                 targetHeight: 320,
                 saveToPhotoAlbum: false
-            }).then(function(imageURI) {
-                console.log(imageURI);
-                $scope.user.photo = imageURI;
+            }).then(function(entry) {
+                alert(entry.nativeURL);
+                $scope.user.photo = entry.nativeURL;
+                $localstorage.set('userlogo',entry.nativeURL);
+
             }, function(err) {
-                console.err(err);
+                console.log(err);
             });
+
         };
         var selectPicture=function(){
 
@@ -153,18 +156,20 @@ angular.module('starter')
                 targetHeight: 320,
                 destinationType: navigator.camera.DestinationType.FILE_URI,
                 sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-            }).then(function(imageURI) {
-                console.log(imageURI);
-                $scope.user.photo = imageURI;
+            }).then(function(entry) {
+
+                $scope.user.photo = entry.nativeURL;
+                $localstorage.set('userlogo',entry.nativeURL);
             }, function(err) {
-                console.err(err);
+                console.log(err);
             });
         };
         $scope.save=function(){
             var options = new FileUploadOptions();
-            options.fileKey="ffile";
+            options.fileKey="file";
             options.fileName=$scope.user.photo.substr($scope.user.photo.lastIndexOf('/')+1);
             options.mimeType="image/jpeg";
+            options.chunkedMode = false;
             var params = {};
             params.other = 'haha'; // some other POST fields
             options.params = params;
