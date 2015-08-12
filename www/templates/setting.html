@@ -5,13 +5,14 @@
         <div class="list">
 
 
-            <ion-toggle ng-model="user.ispush" toggle-class="toggle-calm">Turn on Push</ion-toggle>
+            <ion-toggle ng-model="user.isPush" toggle-class="toggle-calm">Turn on Push</ion-toggle>
 
 
 
-            <a class="item item-thumbnail-right "  ng-click="showPhoto()">
 
-                <img ng-src="{{user.photo}}">
+            <a class="item item-thumbnail-right "  ng-click="showChoice()">
+
+                <img ng-src="{{user.photoName}}">
 
                 Photo
 
@@ -21,7 +22,7 @@
                 <i class="icon ion-mic-a"></i>
                 Nick Name
                 <span class="item-note">
-                    {{user.nickname}}
+                    {{user.nickName}}
                 </span>
             </a>
 
@@ -30,7 +31,7 @@
             <a class="item item-icon-left" ng-click="showInput('phonenumber')">
                 <i class="icon ion-ios-telephone"></i>
                 Phone Number
-                <i class="item-note  ">{{user.phonenumber}}</i>
+                <i class="item-note  ">{{user.phoneNumber}}</i>
 
             </a>
 
@@ -41,9 +42,11 @@
                 Friends
                 <span class="badge badge-assertive">0</span>
             </a>
-            <button class="button button-full button-balanced"  ng-click="save()">
-                Full Width Block Button
+
+            <button class="button button-block button-positive" ng-click="clearCache()">
+                Clear Cache
             </button>
+
 
         </div>
     </ion-content>

@@ -4,6 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 var jpushId='';
+var deviceId='';
+var userId='';
 angular.module('starter', ['ionic'])
 
    .config(['$ionicConfigProvider', function($ionicConfigProvider) {
@@ -15,7 +17,7 @@ angular.module('starter', ['ionic'])
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
     })
 
-    .run(function ($ionicPlatform, jPushService,$state,$localstorage) {
+    .run(function ($ionicPlatform, jPushService,$state,$localstorage,userService) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -46,10 +48,31 @@ angular.module('starter', ['ionic'])
             };
             var onGetRegistradionID=function(data){
                 jpushId=data;
+
+                window.plugins.uniqueDeviceID.get(function(deviceid){
+                    deviceId=deviceid;
+
+                    userService.firstReg().then(function(userid){
+                        userId=userid;
+                        $localstorage.set('jpushid',data);
+                        $localstorage.set('deviceid',deviceid);
+                        $localstorage.set('userid',userid);
+                    })
+
+                }, function(error){alert(error);});
+
             };
 
+
+
             jPushService.init(notificationCallback);
-            jPushService.getId(onGetRegistradionID);
+            jpushId=$localstorage.get('jpushid') || 'nothing';
+            deviceId=$localstorage.get('deviceid') || 'nothing';
+            userId=$localstorage.get('userid') || 12;
+            alert(deviceId);
+            if((jpushId == 'nothing') ||(deviceId == 'nothing') ){
+                jPushService.getId(onGetRegistradionID);
+            }
 
 
         });
@@ -127,5 +150,4 @@ angular.module('starter', ['ionic'])
 ;
 
 
-;
 

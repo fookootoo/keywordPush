@@ -64,8 +64,25 @@ angular.module('starter')
     .factory('Camera', ['$q', function($q) {
 
         return {
-            getPicture: function(options) {
-                alert('camera');
+            getPicture: function(index) {
+                //alert('camera');
+                var options={};
+                if(index == 0){
+                    options={
+                        quality: 75,
+                        targetWidth: 320,
+                        targetHeight: 320,
+                        saveToPhotoAlbum: false
+                    };
+                }else if(index == 1){
+                    options={
+                        quality: 75,
+                        targetWidth: 320,
+                        targetHeight: 320,
+                        destinationType: navigator.camera.DestinationType.FILE_URI,
+                        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+                    };
+                }
                 var q = $q.defer();
 
                 navigator.camera.getPicture(function(result) {
@@ -137,7 +154,7 @@ angular.module('starter')
                 $window.localStorage[key] = JSON.stringify(value);
             },
             getObject: function (key) {
-                return JSON.parse($window.localStorage[key] || '{}');
+                return JSON.parse($window.localStorage[key] || '{"nothing":"true"}');
             }
         }
     }])
@@ -150,16 +167,16 @@ angular.module('starter')
                 page = 1;
                 var deferred = $q.defer();
                 //alert('from cache');
-                var keywordsCache = $localstorage.getObject('keywordsCache1') || 'nothing';
-                if (keywordsCache !== 'nothing') {
-
+                var keywordsCache = $localstorage.getObject('keywordsCache1') ;
+                if (!keywordsCache.nothing) {
+                    //alert('from cache');
                     keywords = keywordsCache;
 
                     deferred.resolve(keywords);
                 }
                 else {
                     //alert('from http');
-                    $http.get('http://172.25.206.1/jpushapi/subDetail')
+                    $http.get('http://172.25.206.1/jpushapi/subDetail?userId='+userId)
                         .success(function (res) {
                             console.log('在servic中的res' + JSON.stringify(res));
                             keywords = res.data;
@@ -182,7 +199,7 @@ angular.module('starter')
                 nextpage ? page++ : page = 1;
                 //alert(page);
                 var deferred = $q.defer();
-                $http.get('http://172.25.206.1/jpushapi/subDetail?page=' + page)
+                $http.get('http://172.25.206.1/jpushapi/subDetail?userId='+userId+'&page=' + page)
                     .success(function (res) {
                         console.log('在servic中的res' + JSON.stringify(res));
                         keywords = res.data;
@@ -211,7 +228,7 @@ angular.module('starter')
                 $http({
                     method: 'POST',
                     url: 'http://172.25.206.1/jpushapi/subDetail',
-                    params: {userId: 'hahaha', jpushId: jpushId, keyword: keyword}
+                    params: {userId: userId, jpushId: jpushId, keyword: keyword}
 
                 }).success(function (res) {
                     //alert(res.msg);
@@ -222,7 +239,11 @@ angular.module('starter')
                         };
                         keywords.unshift(value);
                         console.log('在addKeyword中的keywords' + JSON.stringify(keywords));
-                        $localstorage.setObject('keywordsCache', keywords);
+
+                        if (keywords.length>15){
+                            keywords=keywords.slice(0,15);
+                        }
+                        $localstorage.setObject('keywordsCache1', keywords);
                         deferred.resolve(keywords);
 
                     } else {
@@ -272,5 +293,94 @@ angular.module('starter')
             }
 
         }
+    }])
+    .factory('userService', ['$http','$q', function ($http,$q ) {
+        var userInfo={};
+        return {
+            firstReg:function(){
+                var deferred = $q.defer();
+                userInfo={
+                    deviceId:deviceId,
+                    jpushId:jpushId
+                };
+                $http({
+                    method: 'POST',
+                    url: 'http://172.25.206.1/jpushapi/firstReg',
+                    params: userInfo
+
+                }).success(function (res) {
+                    //alert("doPost返回结果了"+res);
+                    if(res.msg=='success'){
+                        deferred.resolve(res.id);
+                        console.log('first reg succ');
+                    }
+                    else{
+                        deferred.reject('fail');
+                        console.log('first reg fail');
+                    }
+                }).error(function (error) {
+                    deferred.reject('fail');
+                    alert('firstReg net work wrong');
+                });
+                return deferred.promise;
+            },
+
+            getUserInfo:function(userid){
+                var deferred=$q.defer();
+                $http({
+                    method: 'GET',
+                    url: 'http://172.25.206.1/jpushapi/SlUser/'+userid
+
+
+                }).success(function (res) {
+                    //alert("doPost返回结果了"+res);
+                    if(res.id == userid){
+                        deferred.resolve(res);
+                        console.log('get info succ');
+                    }
+                    else{
+                        deferred.reject('fail');
+                        console.log('first reg fail');
+                    }
+                }).error(function (error) {
+                    deferred.reject('fail');
+                    alert('getUserInfo net work wrong');
+                });
+                return deferred.promise;
+
+
+
+            },
+            saveUser:function(userInfo,id){
+
+                //alert(userInfo.isPush);
+                var deferred = $q.defer();
+
+
+                $http({
+                    method: 'PUT',
+                    url: 'http://172.25.206.1/jpushapi/SlUser/'+id,
+                    params: userInfo
+
+                }).success(function (res) {
+                    //alert("doPost返回结果了"+res);
+                    //alert(res.msg);
+                    if(res.msg=='success'){
+                        deferred.resolve(res.id);
+                        console.log('first reg succ');
+                    }
+                    else{
+                        deferred.reject('fail');
+                        console.log('first reg fail');
+                    }
+                }).error(function (error) {
+                    deferred.reject('fail');
+                    alert('saveUser net work wrong');
+                });
+                return deferred.promise;
+
+            }
+        }
+
     }])
 ;
