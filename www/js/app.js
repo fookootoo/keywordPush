@@ -69,7 +69,7 @@ angular.module('starter', ['ionic'])
             jpushId=$localstorage.get('jpushid') || 'nothing';
             deviceId=$localstorage.get('deviceid') || 'nothing';
             userId=$localstorage.get('userid') || 12;
-            alert(deviceId);
+            //alert(deviceId);
             if((jpushId == 'nothing') ||(deviceId == 'nothing') ){
                 jPushService.getId(onGetRegistradionID);
             }

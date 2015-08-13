@@ -1,20 +1,34 @@
 <ion-view view-title="详细信息">
-    <ion-content class="padding">
+    <ion-content>
+        <div class="item item-image imgtransparent " >
+            <img src="img/background.jpg"></img>
 
-        <div class="list card">
+        </div>
+        <div class="float_z">
+            {{keyvalue.keyword}}
+        </div>
 
-            <div class="item item-avatar">
+
+
+        <div class="list">
+            <a class="item left_text" >
+                <h2 style="color:#8b8b8b">最新推送</h2>
+            </a>
+            <a class="item item-avatar" ng-repeat="result in results" type="item-text-wrap"
+               ng-click="openUrl('{{result.result_url}}')" target="_blank">
                 <img src="img/car.jpg">
-                <h2> {{keyvalue.keyword}}</h2>
-                <p>{{keyvalue.userId}}</p>
-            </div>
 
-            <div class="item item-image">
-                <img src="img/car.jpg">
-            </div>
+                <h2>{{result.result_title}}</h2>
 
+                <p>{{result.result_url}}</p>
+            </a>
+            <a class="item middle_text" >
+                <div  class=" ion-chevron-right" style="color:#8b8b8b">  更多</div>
+            </a>
 
 
         </div>
+
+
     </ion-content>
 </ion-view>

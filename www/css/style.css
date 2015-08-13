@@ -18,3 +18,52 @@
     padding-top: 20px;
     vertical-align:middle;
 }
+
+.float_z {
+    position: absolute;
+    top: 0px;
+    width:100%;
+    text-align: center;
+
+    z-index : 2;
+    font-family:Î¢ÈíÑÅºÚ;
+    font-weight:bold;
+    font-size:36px;
+    height:200px;
+    line-height:200px;
+}
+.imgtransparent{
+    opacity:0.4;
+    filter:alpha(opacity=40);
+    width:100%;
+    height:200px;
+    line-height:200px;
+    text-align: center;
+    margin:0 auto;
+    
+}
+
+.middle_text{
+
+    text-align: center;
+    margin:0 auto;
+    width:100%;
+    font-family:Î¢ÈíÑÅºÚ;
+    font-size:6px;
+}
+
+.left_text{
+
+
+    margin:10px 0 0 0;
+    width:100%;
+    font-family:Î¢ÈíÑÅºÚ;
+    font-size:smaller;
+    color: #c1c1c1;
+}
+
+
+.bgimg {
+    background-image: url('../img/background.jpg');
+    background-repeat: no-repeat;
+}

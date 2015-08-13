@@ -383,4 +383,32 @@ angular.module('starter')
         }
 
     }])
+    .factory('ResultService',['$http','$q',function($http,$q){
+        var results={};
+
+        return{
+            getResults:function(keyword){
+                var deferred=$q.defer();
+                //alert('http://172.25.206.1/jpushapi/SlResult?keyword='+keyword);
+                $http({
+                    method: 'GET',
+                    url: 'http://172.25.206.1/jpushapi/SlResult?keyword='+keyword
+                }).success(function (res) {
+                    //alert("doPost返回结果了"+res);
+
+                    deferred.resolve(res);
+                    results=res;
+
+
+                }).error(function (error) {
+                    deferred.reject('fail');
+                    alert('getUserInfo net work wrong');
+                });
+                return deferred.promise;
+
+
+            }
+        }
+
+    }])
 ;

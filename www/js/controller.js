@@ -115,8 +115,22 @@ angular.module('starter')
 
     }
 )
-    .controller('KeywordsDetailCtrl', function ($scope, keyWordsService, $stateParams) {
-        $scope.keyvalue = keyWordsService.get($stateParams.keywordId)
+        .controller('KeywordsDetailCtrl', function ($scope, keyWordsService, $stateParams,ResultService) {
+            $scope.keyvalue = keyWordsService.get($stateParams.keywordId);
+            //alert($scope.keyvalue.keyword);
+            ResultService.getResults($scope.keyvalue.keyword).then(
+                function(res){
+                    console.log(res.data);
+                    $scope.results=res.data;
+                },
+                function(error){
+                    alert('net work wrong');
+                }
+            );
+            $scope.openUrl=function(url){
+                alert(url);
+                var ref = window.open(url, '_blank', 'location=yes');
+            }
 
     })
     .controller('SettingCtrl', function ($scope, $ionicPopup, $ionicActionSheet, $timeout,Camera,$localstorage,userService) {
