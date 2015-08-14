@@ -115,54 +115,88 @@ angular.module('starter')
 
     }
 )
-        .controller('KeywordsDetailCtrl', function ($scope, keyWordsService, $stateParams,ResultService) {
-            $scope.keyvalue = keyWordsService.get($stateParams.keywordId);
-            //alert($scope.keyvalue.keyword);
-            ResultService.getResults($scope.keyvalue.keyword).then(
-                function(res){
-                    console.log(res.data);
-                    $scope.results=res.data;
+    .controller('KeywordsDetailCtrl', function ($scope, keyWordsService, $stateParams, ResultService, $ionicModal,CommentService) {
+        $scope.keyvalue = keyWordsService.get($stateParams.keywordId);
+        //alert($scope.keyvalue.keyword);
+
+        $ionicModal.fromTemplateUrl('templates/keywords-detail-createComment.html', function(modal) {
+            $scope.modal = modal;
+        }, {
+            scope : $scope,
+            animation: 'slide-in-up'
+
+        });
+
+        ResultService.getResults($scope.keyvalue.keyword).then(
+            function (res) {
+                console.log(res.data);
+                $scope.results = res.data;
+            },
+            function (error) {
+                alert('net work wrong');
+            }
+        );
+
+        CommentService.getComments($scope.keyvalue.keyword).then(
+            function (res) {
+                console.log(res.data);
+                $scope.comments = res.data;
+            },
+            function (error) {
+                alert('net work wrong');
+            }
+        );
+
+        $scope.createComment=function(detail) {
+            //alert(detail.newComment);
+            CommentService.saveComments($scope.keyvalue.id,userId,detail.newComment).then(
+                function (res){
+                    alert(res);
+
                 },
                 function(error){
-                    alert('net work wrong');
+                    alert(error);
                 }
+
             );
-            $scope.openUrl=function(url){
-                alert(url);
-                var ref = window.open(url, '_blank', 'location=yes');
-            }
-
-    })
-    .controller('SettingCtrl', function ($scope, $ionicPopup, $ionicActionSheet, $timeout,Camera,$localstorage,userService) {
-
-
-
-        var defaultUser={
-            nickName:'',
-            photoName:'img/car.jpg',
-            phoneNumber:'',
-            isPush:true
 
         };
 
-        function saveUser(){
+        $scope.openUrl = function (url) {
+            alert(url);
+            var ref = window.open(url, '_blank', 'location=yes');
+        }
 
-            $localstorage.setObject('userinfo',$scope.user);
-            userService.saveUser($scope.user,$scope.user.id).then(
-                function(res){
+    })
+    .controller('SettingCtrl', function ($scope, $ionicPopup, $ionicActionSheet, $timeout, Camera, $localstorage, userService) {
+
+
+        var defaultUser = {
+            nickName: '',
+            photoName: 'img/car.jpg',
+            phoneNumber: '',
+            isPush: true
+
+        };
+
+        function saveUser() {
+
+            $localstorage.setObject('userinfo', $scope.user);
+            userService.saveUser($scope.user, $scope.user.id).then(
+                function (res) {
                     console.log('save success')
                 },
-                function(error){
-                    alert('save faile'+error);
+                function (error) {
+                    alert('save faile' + error);
                 }
-
             );
         }
-        function savePhoto(id){
+
+        function savePhoto(id) {
             var options = new FileUploadOptions();
-            options.fileKey="file";
-            options.fileName=$scope.user.photoName.substr($scope.user.photoName.lastIndexOf('/')+1);
-            options.mimeType="image/jpeg";
+            options.fileKey = "file";
+            options.fileName = $scope.user.photoName.substr($scope.user.photoName.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
             options.chunkedMode = false;
             var params = {};
             params.userId = id; // some other POST fields
@@ -181,6 +215,7 @@ angular.module('starter')
                 alert(r);
                 // handle success like a message to the user
             }
+
             function uploadError(error) {
                 alert(error);
                 //console.log("upload error source " + error.source);
@@ -189,52 +224,48 @@ angular.module('starter')
         }
 
 
-
-
-
-        $scope.user = $localstorage.getObject('userinfo') ;
-        if($scope.user.photoName == undefined){
+        $scope.user = $localstorage.getObject('userinfo');
+        if ($scope.user.photoName == undefined) {
             console.log('not save');
-            $scope.user=defaultUser;
+            $scope.user = defaultUser;
             //alert($scope.user.isPush);
         }
-        $scope.user.id=$localstorage.get('userid') ;
+        $scope.user.id = $localstorage.get('userid');
 
 
-        $scope.$watch('user.isPush',function(){
+        $scope.$watch('user.isPush', function () {
             //alert($scope.user.isPush);
             saveUser();
         });
 
-        var showPhoto= function(index){
-            console.log('choice is'+index);
-            Camera.getPicture(index).then(function(entry) {
+        var showPhoto = function (index) {
+            console.log('choice is' + index);
+            Camera.getPicture(index).then(function (entry) {
                 //alert(entry.nativeURL);
                 $scope.user.photoName = entry.nativeURL;
                 saveUser();
                 savePhoto($scope.user.id);
 
-            }, function(err) {
+            }, function (err) {
                 console.log(err);
             });
 
         };
 
 
-
-        $scope.showChoice= function(){
+        $scope.showChoice = function () {
 
             var hideSheet = $ionicActionSheet.show({
                 buttons: [
-                    { text: 'Camera Now' },
-                    { text: 'Use Your Gallery' }
+                    {text: 'Camera Now'},
+                    {text: 'Use Your Gallery'}
                 ],
                 titleText: '',
                 cancelText: 'Cancel',
-                cancel: function() {
+                cancel: function () {
                     // add cancel code..
                 },
-                buttonClicked: function(index) {
+                buttonClicked: function (index) {
                     //alert(index);
                     showPhoto(index);
                     return true;
@@ -242,30 +273,29 @@ angular.module('starter')
             });
 
             // For example's sake, hide the sheet after five seconds
-            $timeout(function() {
+            $timeout(function () {
                 hideSheet();
             }, 5000);
 
         };
-        $scope.clearCache=function(){
+        $scope.clearCache = function () {
             window.localStorage.clear();
         };
         $scope.showInput = function (type) {
-            if(type == 'nickname'){
-                var useTemplate='<label class="item item-input"><input type="text" ng-model="user.nickName"></label>';
-                var useTitle='Enter Your Nick Name';
-                var useSubTitle='like CryBoy GrennTea such thing';
-            }else if(type == 'phonenumber')
-            {
-                var useTemplate='<label class="item item-input"><input type="text" ng-model="user.phoneNumber"></label>';
-                var useTitle='Enter Your Phone Number';
-                var useSubTitle='like 119 110 such thing';
+            if (type == 'nickname') {
+                var useTemplate = '<label class="item item-input"><input type="text" ng-model="user.nickName"></label>';
+                var useTitle = 'Enter Your Nick Name';
+                var useSubTitle = 'like CryBoy GrennTea such thing';
+            } else if (type == 'phonenumber') {
+                var useTemplate = '<label class="item item-input"><input type="text" ng-model="user.phoneNumber"></label>';
+                var useTitle = 'Enter Your Phone Number';
+                var useSubTitle = 'like 119 110 such thing';
 
             }
             var myPopup = $ionicPopup.show({
                 template: useTemplate,
                 title: useTitle,
-                subTitle:useSubTitle,
+                subTitle: useSubTitle,
                 scope: $scope,
                 buttons: [
                     {text: 'Cancel'},
@@ -273,7 +303,7 @@ angular.module('starter')
                         text: '<b>Save</b>',
                         type: 'button-positive',
                         onTap: function (e) {
-                            if(type == 'nickname'){
+                            if (type == 'nickname') {
                                 if (!$scope.user.nickName) {
                                     //don't allow the user to close unless he enters wifi password
                                     e.preventDefault();
@@ -282,7 +312,7 @@ angular.module('starter')
                                     return $scope.user.nickName;
                                 }
 
-                            }else if(type == 'phonenumber'){
+                            } else if (type == 'phonenumber') {
                                 if (!$scope.user.phoneNumber) {
                                     //don't allow the user to close unless he enters wifi password
                                     e.preventDefault();

@@ -22,12 +22,35 @@
 
                 <p>{{result.result_url}}</p>
             </a>
-            <a class="item middle_text" >
-                <div  class=" ion-chevron-right" style="color:#8b8b8b">  更多</div>
+            <a class=" middle_text" >
+                <div  class=" ion-chevron-right" style="color:#30288b">  更多</div>
             </a>
 
 
+
         </div>
+        <a class="item left_text item-icon-right" >
+            <h2 style="color:#8b8b8b">短评</h2>
+            <i class="icon ion-ios-compose-outline" ng-click="modal.show()"></i>
+        </a>
+        <div class="parent_div" ng-repeat="comment in comments">
+            <div class="left_div ">
+
+            </div>
+            <div class="right_div">
+                {{comment.user.nickName}}
+
+            </div>
+            <div class="middle_div">
+                {{comment.comment}}
+
+            </div>
+            <div class="down_div">
+                {{comment.created_at}}
+            </div>
+
+        </div>
+
 
 
     </ion-content>

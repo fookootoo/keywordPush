@@ -1,0 +1,16 @@
+    <div class="modal">
+        <ion-header-bar class="bar bar-header bar-light">
+            <h1 class="title">评论</h1>
+            <button class="button button-clear button-primary" ng-click="modal.hide()">取消</button>
+        </ion-header-bar>
+        <ion-content has-header="true">
+            <div class="padding">
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <textarea placeholder="" rows="8" cols="10" ng-model="detail.newComment"></textarea>
+                    </label>
+                    <button class="button button-full button-light" ng-click="createComment(detail)">发送</button>
+                </div>
+            </div>
+            </ion-content>
+        </div>
