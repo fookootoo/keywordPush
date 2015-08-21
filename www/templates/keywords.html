@@ -1,8 +1,10 @@
 
 <ion-view  view-title="关键字">
+
     <ion-content>
-        <ion-refresher pulling-text="下拉刷新..." pulling-icon="ion-android-arrow-down"
-                       on-refresh="doRefresh()"></ion-refresher>
+
+        <!--<ion-refresher pulling-text="下拉刷新..." pulling-icon="ion-android-arrow-down"
+                       on-refresh="doRefresh()"></ion-refresher>-->
         <div class="item item-input-inset">
             <label class="item-input-wrapper">
                 <input type="text" ng-model="keyword" placeholder="感兴趣的关键字">
@@ -11,7 +13,21 @@
                 添加
             </button>
         </div>
-        <div class="list">
+        <div
+                style="height: 400px;
+                background:#8baa4d;">
+
+            <!-- To enable/disable "livereloading" -->
+
+
+            <!-- The tagcloud, couldn't be simpler -->
+            <tag-cloud tags="tags" tag-clicked="tagClicked(tag)"></tag-cloud>
+
+            <!-- Our "log" to show which tags we clicked on. -->
+
+
+        </div>
+        <!--<div class="list">
 
 
             <ion-list>
@@ -32,6 +48,6 @@
                 icon="ion-load-d"
                 on-infinite="loadMoreData()">
             加载更多
-        </ion-infinite-scroll>
+        </ion-infinite-scroll>-->
     </ion-content>
-    </ion-view>
+</ion-view>

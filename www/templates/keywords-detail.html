@@ -1,5 +1,11 @@
-<ion-view view-title="详细信息">
+
+<ion-view view-title="详细信息" hide-more>
+    <ion-nav-buttons side="right" >
+        <button class="button button-icon ion-more" ng-show="$root.hideMore" ng-click="popover.show($event)">
+        </button>
+    </ion-nav-buttons>
     <ion-content>
+
         <div class="item item-image imgtransparent " >
             <img src="img/background.jpg"></img>
 
@@ -14,15 +20,20 @@
             <a class="item left_text" >
                 <h2 style="color:#8b8b8b">最新推送</h2>
             </a>
+
+            <div ng-if="resultText == 'no' " class="middle_text_gray">
+               对不起，暂时没有采集到数据，请明天再试。
+            </div>
+
             <a class="item item-avatar" ng-repeat="result in results" type="item-text-wrap"
                ng-click="openUrl('{{result.result_url}}')" target="_blank">
-                <img src="img/car.jpg">
+                <img src="http://192.168.0.243/image/{{result.img_path}}">
 
                 <h2>{{result.result_title}}</h2>
 
                 <p>{{result.result_url}}</p>
             </a>
-            <a class=" middle_text" >
+            <a class=" middle_text" ng-if="resultText == 'yes' && results.length > 5">
                 <div  class=" ion-chevron-right" style="color:#30288b">  更多</div>
             </a>
 
@@ -33,22 +44,25 @@
             <h2 style="color:#8b8b8b">短评</h2>
             <i class="icon ion-ios-compose-outline" ng-click="modal.show()"></i>
         </a>
-        <div class="parent_div" ng-repeat="comment in comments">
-            <div class="left_div ">
+
+
+        <div id="comment_parent_div" ng-repeat="comment in comments">
+            <div id="comment_left_div" >
+                <img src="http://172.25.206.1/{{comment.user.photoName}}" class="comment_avatar_img">
 
             </div>
-            <div class="right_div">
-                {{comment.user.nickName}}
+            <div id="comment_right_par_div">
+                <div id="comment_up_div">
+                    <span>{{comment.user.nickName}}</span><br>
+                    <span class="text_gray">{{comment.pulish_at}}</span>
+                </div>
+                <div id="comment_middle_div">
+                    {{comment.comment}}
+                </div>
+                <div id="comment_down_div">
 
+                </div>
             </div>
-            <div class="middle_div">
-                {{comment.comment}}
-
-            </div>
-            <div class="down_div">
-                {{comment.created_at}}
-            </div>
-
         </div>
 
 

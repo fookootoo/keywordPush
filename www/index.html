@@ -6,6 +6,7 @@
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+
     <link href="css/style.css" rel="stylesheet">
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
@@ -13,24 +14,34 @@
     -->
 
     <!-- ionic/angularjs js -->
+
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
+
+
+
     <!-- your app's js -->
+
     <script src="js/app.js"></script>
     <script src="js/service.js"></script>
     <script src="js/controller.js"></script>
     <script src="js/constants.js"></script>
+    <script src="lib/tagcanvas.js"></script>
+    <script src="js/tagcloud/tagcloud.js"></script>
     <script src='http://webapi.amap.com/maps?v=1.3&key=15bb397de12d7b9a21c683df95bdf24b'></script>
 </head>
 <body ng-app="starter" >
 
-<ion-nav-bar class="bar bar-header bar-positive">
-    <ion-nav-back-button class="button-clear">
-        <i class="ion-arrow-left-c"></i>
+<ion-nav-bar class="bar-positive">
+    <ion-nav-back-button class="button-icon ion-arrow-left-c">
     </ion-nav-back-button>
+</ion-nav-bar>
+
+
+
 </ion-nav-bar>
 
 <ion-nav-view></ion-nav-view>

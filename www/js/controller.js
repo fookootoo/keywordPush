@@ -1,15 +1,32 @@
-angular.module('starter')
-    .controller('KeywordsCtrl', function ($scope, $q, jPushService, keyWordsService) {
+angular.module('starter.controller',[])
+
+    .controller('KeywordsCtrl', function ($scope, $q, jPushService, keyWordsService,$timeout,$interval) {
         var useCache = true;
+
 
         $scope.moreDataCanBeLoaded = true;
         var nextpage = true;
+
+        function updateTags(res){
+            $scope.tags.length=0;
+            res.forEach(
+                function(element, index, array){
+                    console.log(index);
+                    var eachone={ id:element.keyid,text: element.keyword,  value: Math.random()*(20-10)+30 };
+                    $scope.tags.push(eachone);
+
+                    console.log(index +'  '+element.id);
+                });
+        }
 
         keyWordsService.allKeywords(useCache).then(function (res) {
             //alert(res);
 
             console.log(JSON.stringify(res));
+
             $scope.keywords = res;
+            updateTags(res);
+            console.log($scope.tags);
             //alert(res.length);
             if (res.length < 15) {
                 $scope.moreDataCanBeLoaded = false;
@@ -82,6 +99,7 @@ angular.module('starter')
                 //alert(res);
                 console.log(JSON.stringify(res));
                 $scope.keywords = res;
+                updateTags(res);
 
             }, function (err) {
                 alert(err);
@@ -113,10 +131,58 @@ angular.module('starter')
             });
         };
 
+
+
+
+
+
+
+
+        $scope.tags = [{text: 'Loading...', value: 40}, {text: 'Please'}, {text: 'wait'}, {text: 'a'}, {text: 'few'}, {text: 'seconds'}];
+
+ /*       $timeout(angular.noop, 2000)
+            .then(function () {
+                // All tags are loaded, update the tags array.
+                $scope.tags = [
+                    { text: 'Fake link 1',  value: 35 },
+                    { text: 'Fake link 2',  value: 46 },
+                    { text: 'Fake link 3',  value: 23 },
+                    { text: 'Fake link 4',  value: 40 },
+                    { text: 'Fake link 5',  value: 20 },
+                    { text: 'Fake link 6',  value: 44 },
+                    { text: 'Google',       value: 60 },
+                    { text: 'Yahoo',        value: 50 },
+                    { text: 'Microsoft',    value: 40 },
+                    { text: 'BBC',          value: 30 }
+                ];
+
+                // We also install the "livereloading" interval here...
+
+            });*/
+
+        // We simulate that the tags were loaded after 2 seconds
+
+
+        // When you click a tag we show the text in the "log" below the tagcloud.
+
+
+
+
     }
 )
-    .controller('KeywordsDetailCtrl', function ($scope, keyWordsService, $stateParams, ResultService, $ionicModal,CommentService) {
+    .controller('KeywordsDetailCtrl', function ($scope, keyWordsService, $stateParams, ResultService, $ionicModal,CommentService,$ionicPopover) {
         $scope.keyvalue = keyWordsService.get($stateParams.keywordId);
+
+        $ionicPopover.fromTemplateUrl('templates/keywords-detail-popover.html', {
+            scope: $scope
+        }).then(function(popover) {
+            $scope.popover = popover;
+            animation: 'slide-in-down'
+        });
+        $scope.delete=function(){
+            alert('delete');
+        }
+
         //alert($scope.keyvalue.keyword);
 
         $ionicModal.fromTemplateUrl('templates/keywords-detail-createComment.html', function(modal) {
@@ -129,6 +195,11 @@ angular.module('starter')
 
         ResultService.getResults($scope.keyvalue.keyword).then(
             function (res) {
+                if(res.data.length ==0){
+                    $scope.resultText='no';
+                }else{
+                    $scope.resultText='yes';
+                }
                 console.log(res.data);
                 $scope.results = res.data;
             },
@@ -136,22 +207,28 @@ angular.module('starter')
                 alert('net work wrong');
             }
         );
+        refreshComments();
+        function refreshComments(){
+            CommentService.getComments($scope.keyvalue.keyword).then(
+                function (res) {
+                    console.log('刷新评论'+res.data);
+                    $scope.comments = res.data;
+                },
+                function (error) {
+                    alert('net work wrong');
+                }
+            );
 
-        CommentService.getComments($scope.keyvalue.keyword).then(
-            function (res) {
-                console.log(res.data);
-                $scope.comments = res.data;
-            },
-            function (error) {
-                alert('net work wrong');
-            }
-        );
+        }
+
+
 
         $scope.createComment=function(detail) {
             //alert(detail.newComment);
-            CommentService.saveComments($scope.keyvalue.id,userId,detail.newComment).then(
+            CommentService.saveComments($scope.keyvalue.keyid,userId,detail.newComment).then(
                 function (res){
-                    alert(res);
+                    //alert(res);
+                    refreshComments();
 
                 },
                 function(error){

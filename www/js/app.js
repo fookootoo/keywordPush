@@ -6,7 +6,7 @@
 var jpushId='';
 var deviceId='';
 var userId='';
-angular.module('starter', ['ionic'])
+angular.module('starter', ['ionic','tagcloud','starter.controller','starter.service','starter.constant'])
 
    .config(['$ionicConfigProvider', function($ionicConfigProvider) {
 
@@ -14,7 +14,7 @@ angular.module('starter', ['ionic'])
 
     }])
     .config(function($compileProvider){
-        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|mailto|tel):|data:image\//);
     })
 
     .run(function ($ionicPlatform, jPushService,$state,$localstorage,userService) {
@@ -144,10 +144,23 @@ angular.module('starter', ['ionic'])
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/splash');
 
+    })
+    .directive('hideMore', function($rootScope) {
+        return {
+            restrict: 'A',
+            link: function($scope, $el) {
+
+                $rootScope.hideMore = true;
+                $scope.$on('$destroy', function() {
+                    $rootScope.hideMore = false;
+                });
+
+            }
+        };
     });
 
 
-;
+
 
 
 

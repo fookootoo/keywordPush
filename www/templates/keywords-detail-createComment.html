@@ -9,7 +9,7 @@
                     <label class="item item-input item-stacked-label">
                         <textarea placeholder="" rows="8" cols="10" ng-model="detail.newComment"></textarea>
                     </label>
-                    <button class="button button-full button-light" ng-click="createComment(detail)">发送</button>
+                    <button class="button button-full button-light" ng-click="modal.hide();createComment(detail)">发送</button>
                 </div>
             </div>
             </ion-content>

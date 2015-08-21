@@ -1,4 +1,4 @@
-angular.module('starter')
+angular.module('starter.service',[])
     .factory('jPushService', function () {
         var push;
         return {
@@ -80,7 +80,8 @@ angular.module('starter')
                         targetWidth: 320,
                         targetHeight: 320,
                         destinationType: navigator.camera.DestinationType.FILE_URI,
-                        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+                        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                        correctOrientation: true
                     };
                 }
                 var q = $q.defer();
@@ -179,10 +180,10 @@ angular.module('starter')
                     $http.get('http://172.25.206.1/jpushapi/subDetail?userId='+userId)
                         .success(function (res) {
                             console.log('在servic中的res' + JSON.stringify(res));
-                            keywords = res.data;
-                            $localstorage.setObject('keywordsCache' + page, res.data);
+                            keywords = res;
+                            $localstorage.setObject('keywordsCache' + page, res);
 
-                            deferred.resolve(res.data);
+                            deferred.resolve(res);
 
 
                         })
@@ -232,9 +233,9 @@ angular.module('starter')
 
                 }).success(function (res) {
                     //alert(res.msg);
-                    if (res.msg = 'success') {
+                    if (res.msg == 'success') {
                         var value = {
-                            id: res.id,
+                            keyid: res.id,
                             keyword: keyword
                         };
                         keywords.unshift(value);
@@ -283,9 +284,9 @@ angular.module('starter')
 
             },
             get: function (keywordId) {
-                //alert(keywordId);
+
                 for (var i = 0; i < keywords.length; i++) {
-                    if (keywords[i].id === parseInt(keywordId)) {
+                    if (keywords[i].keyid === parseInt(keywordId)) {
                         return keywords[i];
                     }
                 }
@@ -389,7 +390,7 @@ angular.module('starter')
         return{
             getResults:function(keyword){
                 var deferred=$q.defer();
-                alert('http://172.25.206.1/jpushapi/SlResult?keyword='+keyword);
+                //alert('http://172.25.206.1/jpushapi/SlResult?keyword='+keyword);
                 $http({
                     method: 'GET',
                     url: 'http://172.25.206.1/jpushapi/SlResult?keyword='+keyword
@@ -402,7 +403,7 @@ angular.module('starter')
 
                 }).error(function (error) {
                     deferred.reject('fail');
-                    alert('getUserInfo net work wrong');
+                    alert('Keywords Result get net work wrong');
                 });
                 return deferred.promise;
 
@@ -417,12 +418,12 @@ angular.module('starter')
         return{
             getComments:function(keyword){
                 var deferred=$q.defer();
-                //alert('http://172.25.206.1/jpushapi/SlResult?keyword='+keyword);
+                //alert('http://172.25.206.1/jpushapi/SlComment?keyword='+keyword);
                 $http({
                     method: 'GET',
                     url: 'http://172.25.206.1/jpushapi/SlComment?keyword='+keyword
                 }).success(function (res) {
-                    alert("getComments"+res.current_page);
+                    //alert("getComments"+res.current_page);
 
                     deferred.resolve(res);
                     comments=res;
@@ -430,7 +431,7 @@ angular.module('starter')
 
                 }).error(function (error) {
                     deferred.reject('fail');
-                    alert('getUserInfo net work wrong');
+                    alert('getComments net work wrong');
                 });
                 return deferred.promise;
 
@@ -438,6 +439,7 @@ angular.module('starter')
             },
             saveComments:function(keywordId,userId,comment){
                 var deferred = $q.defer();
+
                 var data={
                     keywordId:keywordId,
                     userId:userId,
@@ -456,6 +458,7 @@ angular.module('starter')
                     if(res.msg=='success'){
                         deferred.resolve(res.id);
                         console.log('first reg succ');
+
                     }
                     else{
                         deferred.reject('fail');
