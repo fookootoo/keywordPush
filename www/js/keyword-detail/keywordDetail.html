@@ -22,10 +22,10 @@
             </a>
 
             <div ng-if="resultText == 'no' " class="middle_text_gray">
-               对不起，暂时没有采集到数据，请明天再试。
+                对不起，暂时没有采集到数据，请明天再试。
             </div>
 
-            <a class="item item-avatar" ng-repeat="result in results" type="item-text-wrap"
+            <a class="item item-thumbnail-left item-text-wrap" ng-repeat="result in results"
                ng-click="openUrl('{{result.result_url}}')" target="_blank">
                 <img src="http://192.168.0.243/image/{{result.img_path}}">
 
@@ -33,9 +33,11 @@
 
                 <p>{{result.result_url}}</p>
             </a>
+
             <a class=" middle_text" ng-if="resultText == 'yes' && results.length > 5">
                 <div  class=" ion-chevron-right" style="color:#30288b">  更多</div>
             </a>
+
 
 
 

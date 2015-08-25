@@ -1590,7 +1590,7 @@ TCproto.Load = function() {
       taglist[i].position = new Vector(vl[i][0], vl[i][1], vl[i][2]);
   }
   if(this.noTagsMessage && !taglist.length)
-    taglist = this.Message('No tags');
+    taglist = this.Message('输入你要订阅的关键字');
   this.taglist = taglist;
 };
 TCproto.Update = function() {

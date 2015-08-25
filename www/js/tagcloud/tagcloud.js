@@ -73,7 +73,7 @@ angular.module('tagcloud', [])
 
       scope.$on('$destroy', function () {
         $interval.cancel(resizeInterval);
-        TagCanvas.Stop(canvasId);
+        TagCanvas.Delete(canvasId);
       });
     }
   };

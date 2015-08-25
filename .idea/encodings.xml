@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/www/js/app.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/constants.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/js/controller.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/keyword-detail/keywordDetail.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/keyword-detail/keywordDetailController.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/keyword-detail/keywordDetailService.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/keyword/keywordIndex.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/keyword/keywordIndexController.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/keyword/keywordIndexService.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/js/tagcloud/tagcloud.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/js/tagcloud/tagcloud.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/lib/tagcanvas.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/www/templates/find.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/templates/keywords-detail.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/templates/keywords.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/www/templates/setting.html" charset="UTF-8" />

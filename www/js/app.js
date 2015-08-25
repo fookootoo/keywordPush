@@ -6,7 +6,20 @@
 var jpushId='';
 var deviceId='';
 var userId='';
-angular.module('starter', ['ionic','tagcloud','starter.controller','starter.service','starter.constant'])
+angular.module('starter', [
+    'ionic',
+    'tagcloud',
+    'starter.controller',
+    'starter.service',
+    'starter.constant',
+    'starter.controller.keyword',
+    'starter.service.keyword',
+    'starter.service.keywordDetail',
+    'starter.controller.keywordDetail',
+    'starter.controller.setting',
+    'starter.controller.find'
+
+])
 
    .config(['$ionicConfigProvider', function($ionicConfigProvider) {
 
@@ -35,7 +48,7 @@ angular.module('starter', ['ionic','tagcloud','starter.controller','starter.serv
                 var message = angular.fromJson(data);
                 alert(message.alert);
                 /* var notification = angular.fromJson(data);
-                 //app  «∑Ò¥¶”⁄’˝‘⁄‘À––◊¥Ã¨
+                 //app ÊòØÂê¶Â§Ñ‰∫éÊ≠£Âú®ËøêË°åÁä∂ÊÄÅ
                  var isActive = notification.notification;
                  //ios
                  if (ionic.Platform.isIOS()) {
@@ -43,7 +56,7 @@ angular.module('starter', ['ionic','tagcloud','starter.controller','starter.serv
 
                  } else {
                  window.alert(notification);
-                 //∑« ios(android)
+                 //Èùû ios(android)
                  }*/
             };
             var onGetRegistradionID=function(data){
@@ -103,7 +116,7 @@ angular.module('starter', ['ionic','tagcloud','starter.controller','starter.serv
                 url: '/keywords',
                 views: {
                     'tab-keywords': {
-                        templateUrl: 'templates/keywords.html',
+                        templateUrl: 'js/keyword/keywordIndex.html',
                         controller: 'KeywordsCtrl'
                     }
                 }
@@ -112,7 +125,7 @@ angular.module('starter', ['ionic','tagcloud','starter.controller','starter.serv
                 url: '/keywords/:keywordId',
                 views: {
                     'tab-keywords': {
-                        templateUrl: 'templates/keywords-detail.html',
+                        templateUrl: 'js/keyword-detail/keywordDetail.html',
                         controller: 'KeywordsDetailCtrl'
                     }
                 }
@@ -122,7 +135,7 @@ angular.module('starter', ['ionic','tagcloud','starter.controller','starter.serv
                 url: '/find',
                 views: {
                     'tab-find': {
-                        templateUrl: 'templates/find.html',
+                        templateUrl: 'js/find/find.html',
                         controller: 'FindCtrl'
                     }
                 }
@@ -133,7 +146,7 @@ angular.module('starter', ['ionic','tagcloud','starter.controller','starter.serv
                 url: '/setting',
                 views: {
                     'tab-setting': {
-                        templateUrl: 'templates/setting.html',
+                        templateUrl: 'js/setting/setting.html',
                         controller: 'SettingCtrl'
                     }
                 }
